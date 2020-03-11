@@ -18,9 +18,18 @@ if (ENV === 'development') {
   app.use(webpackHotMiddleware(compiler));
 }
 app.get('*', (req, res) => {
-  res.send({
-    hello: ' express '
-  });
+  res.send(`
+    <html>
+      <head>
+        <title>Platzi Video</title>
+        <link rel="stylesheet" href="assets/app.css" type="text/css">
+      </head>
+      <body>
+        <div id="app"></div>
+        <script src="assets/app.js" type="text/javascript"></script>
+      </body>
+    </html >
+    `);
 });
 
 app.listen(PORT, (err) => {
