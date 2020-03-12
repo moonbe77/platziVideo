@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "ENV=production PORT=3002 webpack-cli --config webpack.config.js",
     "dev": "nodemon src/server/index",
-    "prod": "ENV=production PORT=3002 node src/server"
+    "prod": "ENV=production PORT=3002 node src/server",
+    "lint": "eslint src/frontend --ext .js --ext .jsx --fix"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,7 @@
   "dependencies": {
     "asset-require-hook": "^1.2.0",
     "classnames": "^2.2.6",
+    "compression-webpack-plugin": "^3.1.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^3.21.3",
@@ -34,27 +36,28 @@
   "devDependencies": {
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
-    "nodemon": "^2.0.2",
     "@babel/preset-react": "^7.8.3",
     "@babel/register": "^7.8.6",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.4.2",
     "eslint": "^6.8.0",
+    "eslint-loader": "^3.0.3",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
-    "babel-loader": "^8.0.6",
-    "css-loader": "^3.4.2",
-    "react-hot-loader": "^4.12.19",
     "file-loader": "^4.3.0",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.13.1",
+    "nodemon": "^2.0.2",
+    "react-hot-loader": "^4.12.19",
     "sass-loader": "^7.3.1",
+    "terser-webpack-plugin": "^2.3.5",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3",
     "webpack-dev-middleware": "^3.7.2",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-dev-server": "^3.10.3",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-manifest-plugin": "^2.2.0"
   }
 }
