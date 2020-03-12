@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode production",
-    "start": "webpack-dev-server --open --mode development",
-    "start:dev": "nodemon src/server/index"
+    "build": "ENV=production PORT=3002 webpack-cli --config webpack.config.js",
+    "dev": "nodemon src/server/index",
+    "prod": "ENV=production PORT=3002 node src/server"
   },
   "keywords": [],
   "author": "",
