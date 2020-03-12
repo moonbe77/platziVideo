@@ -12,6 +12,8 @@ import serverRoutes from '../frontend/routes/serverRoutes';
 import reducer from '../frontend/reducers';
 import initialState from '../frontend/initialState';
 
+const helmet = require('helmet');
+
 dotenv.config();
 const { ENV, PORT } = process.env;
 const app = express();
@@ -26,6 +28,11 @@ if (ENV === 'development') {
 
   app.use(webpackDevMiddleware(compiler, serverConfig));
   app.use(webpackHotMiddleware(compiler));
+} else {
+  app.use(express.static(`${__dirname}/public`));
+  app.use(helmet());
+  app.use(helmet(helmet.permittedCrossDomainPolicies()));
+  app.disable('x-powered-by');
 }
 const setResponse = (html, preloadedState) => {
   return `
