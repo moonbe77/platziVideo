@@ -1,3 +1,6 @@
+/* eslint-disable arrow-parens */
+import axios from 'axios';
+
 export const setFavorite = payload => ({
   type: 'SET_FAVORITE',
   payload,
@@ -23,7 +26,50 @@ export const registerRequest = payload => ({
   payload,
 });
 
+export const setError = payload => ({
+  type: 'SET_ERROR',
+  payload,
+});
+
 export const getVideoSource = payload => ({
   type: 'GET_VIDEO_SOURCE',
   payload,
 });
+
+export const registerUser = (payload, redirectUrl) => {
+  return dispatch => {
+    axios
+      .post('http://localhost:8000/auth/sign-up', payload)
+      .then(({ data }) => dispatch(registerRequest(data)))
+      .then(() => {
+        console.log(`REDIRECT URL>> ${redirectUrl}`);
+        window.location.href = redirectUrl;
+      })
+      .catch(err => dispatch(setError(err)));
+  };
+};
+
+export const loginUser = ({ email, password }, redirectUrl) => {
+  return dispatch => {
+    axios({
+      url: 'http://localhost:8000/auth/sign-in',
+      method: 'post',
+      auth: {
+        username: email,
+        password,
+      },
+    })
+      .then(({ data }) => {
+        const { email, name, id } = data.user;
+        document.cookie = `email=${email}`;
+        document.cookie = `name=${name}`;
+        document.cookie = `id=${id}`;
+        document.cookie = `token=${data.token}`;
+      })
+      .then(() => {
+        console.log(`REDIRECT URL>> ${redirectUrl}`);
+        window.location.href = redirectUrl;
+      })
+      .catch(err => dispatch(setError(err)));
+  };
+};

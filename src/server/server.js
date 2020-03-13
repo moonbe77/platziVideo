@@ -1,5 +1,7 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable global-require */
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import webpack from 'webpack';
 import React from 'react';
@@ -8,9 +10,10 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import { renderRoutes } from 'react-router-config';
 import { StaticRouter } from 'react-router-dom';
+import Axios from 'axios';
 import serverRoutes from '../frontend/routes/serverRoutes';
 import reducer from '../frontend/reducers';
-import initialState from '../frontend/initialState';
+// import initialState from '../frontend/initialState';
 import getManifest from './getManifest';
 
 const helmet = require('helmet');
@@ -18,13 +21,14 @@ const helmet = require('helmet');
 dotenv.config();
 const { ENV, PORT } = process.env;
 const app = express();
+app.use(cookieParser());
 
 if (ENV === 'development') {
   console.log(`Environment set to > ${ENV}`);
-  const wepackConfig = require('../../webpack.config');
+  const webpackConfig = require('../../webpack.config');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
-  const compiler = webpack(wepackConfig);
+  const compiler = webpack(webpackConfig);
   const serverConfig = { port: PORT, hot: true };
 
   app.use(webpackDevMiddleware(compiler, serverConfig));
@@ -64,13 +68,63 @@ const setResponse = (html, preloadedState, manifest) => {
     `;
 };
 
-const renderApp = (req, res) => {
+const renderApp = async (req, res) => {
+  let initialState;
+  let listMovies;
+
+  try {
+    const { token } = req.cookies;
+    listMovies = await Axios({
+      url: 'https://movie-api-moonbe77.now.sh/api/movies',
+      headers: { Authorization: `Bearer ${token}` },
+      method: 'get',
+    });
+
+    listMovies = listMovies.data.data;
+  } catch (error) {
+    listMovies = [];
+  }
+
+  try {
+    const { name, id, email } = req.cookies;
+
+    let user = {};
+
+    if (name || email || id) {
+      user = {
+        id,
+        name,
+        email,
+      };
+    }
+    console.log('User>>', user);
+
+    initialState = {
+      user,
+      playing: {},
+      myList: [],
+      trends: listMovies,
+      originals: listMovies,
+    };
+  } catch (error) {
+    console.log(error);
+
+    initialState = {
+      user: {},
+      playing: {},
+      myList: [],
+      trends: [],
+      originals: [],
+    };
+  }
+
+  const isLogged = initialState.user.id;
   const store = createStore(reducer, initialState);
   const preloadedState = store.getState();
   const html = renderToString(
     <Provider store={store}>
       <StaticRouter location={req.url} context={{}}>
-        {renderRoutes(serverRoutes)}
+        {renderRoutes(serverRoutes(isLogged))}
       </StaticRouter>
     </Provider>,
   );
@@ -78,7 +132,7 @@ const renderApp = (req, res) => {
 };
 app.get('*', renderApp);
 
-app.listen(PORT, (err) => {
+app.listen(PORT, err => {
   if (err) console.log(err);
   else console.log(`Server running on port: http://localhost:${PORT}`);
 });
