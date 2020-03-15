@@ -31,6 +31,11 @@ const serverRoutes = isLogged => {
       name: 'NotFound',
       component: NotFound,
     },
+    {
+      path: '/auth/google/callback',
+      name: 'googleCallBack',
+      component: Home,
+    },
   ];
 };
 

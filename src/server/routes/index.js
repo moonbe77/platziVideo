@@ -1,56 +1,30 @@
-/* eslint-disable global-require */
-import express from 'express';
-import cookieParser from 'cookie-parser';
-import webpack from 'webpack';
-import passport from 'passport';
-import session from 'express-session';
-import boom from '@hapi/boom';
-import axios from 'axios';
-import main from './main';
-
-import { config } from './config';
-
-// const helmet = require('helmet');
-
-// import cors = require('cors');
+const passport = require('passport');
+const session = require('express-session');
+const boom = require('@hapi/boom');
+const axios = require('axios');
+const debug = require('debug')('app:ssr-server');
+// const cors = require('cors');
+const { config } = require('../config');
 
 const app = express();
+
+// body parser
 app.use(express.json());
 app.use(cookieParser());
 app.use(session({ secret: config.sessionSecret }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-if (config.dev) {
-  console.log(`Environment set to > ${config.dev}`);
-  const webpackConfig = require('../../webpack.config');
-  const webpackDevMiddleware = require('webpack-dev-middleware');
-  const webpackHotMiddleware = require('webpack-hot-middleware');
-  const compiler = webpack(webpackConfig);
-  const serverConfig = { port: config.port, hot: true };
-
-  app.use(webpackDevMiddleware(compiler, serverConfig));
-  app.use(webpackHotMiddleware(compiler));
-} else {
-  app.use((req, res, next) => {
-    if (!req.hashManifest) req.hashManifest = getManifest();
-    next();
-  });
-  app.use(express.static(`${__dirname}/public`));
-  app.use(helmet());
-  app.use(helmet(helmet.permittedCrossDomainPolicies()));
-  app.disable('x-powered-by');
-}
-// Basic strategy
-require('./utils/auth/strategies/basic');
+// app.use(cors());
+//  Basic strategy
+require('../utils/auth/strategies/basic');
 
 // OAuth strategy
-require('./utils/auth/strategies/oauth');
+require('../utils/auth/strategies/oauth');
 
 // Socials strategy
-require('./utils/auth/strategies/twitter');
-require('./utils/auth/strategies/google');
-require('./utils/auth/strategies/facebook');
+require('../utils/auth/strategies/twitter');
+require('../utils/auth/strategies/google');
+require('../utils/auth/strategies/facebook');
 
 app.post('/auth/sign-in', async (req, res, next) => {
   passport.authenticate('basic', (error, data) => {
@@ -64,7 +38,7 @@ app.post('/auth/sign-in', async (req, res, next) => {
           next(error);
         }
 
-        const { token } = data;
+        const { token, ...user } = data;
 
         res.cookie('token', token, {
           httpOnly: !config.dev,
@@ -197,7 +171,7 @@ app.get(
   '/auth/google-oauth/callback',
   passport.authenticate('google-oauth', { session: false }),
   (req, res, next) => {
-    console.log('google-oauth callback url called');
+    debug('google-oauth callback url called');
 
     if (!req.user) {
       next(boom.unauthorized());
@@ -284,10 +258,3 @@ app.get(
     res.status(200).json(user);
   },
 );
-
-app.get('*', main);
-
-app.listen(config.port, err => {
-  if (err) console.log(err);
-  else console.log(`Server running on port: http://localhost:${config.port}`);
-});

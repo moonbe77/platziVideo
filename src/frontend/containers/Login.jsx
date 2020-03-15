@@ -1,3 +1,4 @@
+/* eslint-disable arrow-parens */
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -7,19 +8,19 @@ import '../assets/styles/components/Login.scss';
 import googleIcon from '../assets/static/google-icon.png';
 import twitterIcon from '../assets/static/twitter-icon.png';
 
-const Login = (props) => {
+const Login = props => {
   const [form, setValues] = useState({
     email: '',
   });
 
-  const handleInput = (event) => {
+  const handleInput = event => {
     setValues({
       ...form,
       [event.target.name]: event.target.value,
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     props.loginUser(form, '/');
     // props.history.push('/');
@@ -59,12 +60,16 @@ const Login = (props) => {
           </form>
           <section className='login__container--social-media'>
             <div>
-              <img src={googleIcon} alt='Google Icon' />
-              Inicia sesión con Google
+              <a href='/auth/google'>
+                <img src={googleIcon} alt='Google Icon' />
+                Inicia sesión con Google
+              </a>
             </div>
             <div>
-              <img src={twitterIcon} alt='Twitter Icon' />
-              Inicia sesión con Twitter
+              <a href='/auth/twitter'>
+                <img src={twitterIcon} alt='Twitter Icon' />
+                Inicia sesión con Twitter
+              </a>
             </div>
           </section>
           <p className='login__container--register'>
