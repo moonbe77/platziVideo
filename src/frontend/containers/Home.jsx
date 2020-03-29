@@ -1,5 +1,8 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable arrow-parens */
 import React from 'react';
 import { connect } from 'react-redux';
+import Axios from 'axios';
 import Header from '../components/Header';
 import Search from '../components/Search';
 import Categories from '../components/Categories';
@@ -8,6 +11,17 @@ import CarouselItem from '../components/CarouselItem';
 import '../assets/styles/App.scss';
 
 const Home = ({ myList, trends, originals }) => {
+  const userMovies = [];
+
+  myList.map(item => {
+    Axios.get(`https://movie-api-moonbe77.now.sh/api/movies/${item.movieId}`).then(
+      res => {
+        console.log(res);
+        userMovies.push(res);
+      },
+    );
+  });
+  console.log(userMovies);
   return (
     <>
       <Header />
@@ -39,7 +53,7 @@ const Home = ({ myList, trends, originals }) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     myList: state.myList,
     trends: state.trends,

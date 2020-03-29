@@ -9,7 +9,7 @@ import logo from '../assets/static/logo-platzi-video-BW2.png';
 import userIcon from '../assets/static/user-icon.png';
 
 const Header = (props) => {
-  const { user, isLogin, isRegister } = props;
+  const { user, isLogin, isRegister, error } = props;
   const hasUser = Object.keys(user).length > 0;
 
   const handleLogout = () => {
@@ -29,6 +29,9 @@ const Header = (props) => {
       <Link to='/'>
         <img className='header__img' src={logo} alt='Platzi Video' />
       </Link>
+      <div>
+        {error ? error.message : 'no error'}
+      </div>
       <div className='header__menu'>
         <div className='header__menu--profile'>
           {hasUser ? (
@@ -64,6 +67,7 @@ const Header = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.user,
+    error: state.error,
   };
 };
 

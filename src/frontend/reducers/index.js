@@ -25,6 +25,11 @@ const reducer = (state, action) => {
         ...state,
         user: action.payload,
       };
+    case 'SET_ERROR':
+      return {
+        ...state,
+        error: action.payload,
+      };
     case 'GET_VIDEO_SOURCE':
       return {
         ...state,

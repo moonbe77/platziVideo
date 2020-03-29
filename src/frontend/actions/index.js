@@ -50,6 +50,9 @@ export const registerUser = (payload, redirectUrl) => {
 };
 
 export const loginUser = ({ email, password }, redirectUrl) => {
+  console.log(`
+  user data${email} : ${password}`);
+
   return dispatch => {
     axios({
       url: '/auth/sign-in',
@@ -67,7 +70,6 @@ export const loginUser = ({ email, password }, redirectUrl) => {
         document.cookie = `token=${data.token}`;
       })
       .then(() => {
-        console.log(`REDIRECT URL>> ${redirectUrl}`);
         window.location.href = redirectUrl;
       })
       .catch(err => dispatch(setError(err)));

@@ -16,6 +16,7 @@ require('dotenv').config();
 const main = async (req, res, next) => {
   let initialState;
   let listMovies;
+  let userMovies;
 
   try {
     const { token } = req.cookies;
@@ -41,13 +42,27 @@ const main = async (req, res, next) => {
         name,
         email,
       };
+      try {
+        const { token } = req.cookies;
+        userMovies = await axios({
+          url: `${config.apiUrl}/api/user-movies`,
+          headers: { Authorization: `Bearer ${token}` },
+          method: 'get',
+        });
+
+        userMovies = userMovies.data.data;
+        // console.log(userMovies);
+      } catch (error) {
+        userMovies = [];
+        console.log(error.response.status);
+      }
     }
     console.log('User>>', user);
 
     initialState = {
       user,
       playing: {},
-      myList: [],
+      myList: userMovies,
       trends: listMovies,
       originals: listMovies,
     };

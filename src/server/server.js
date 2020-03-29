@@ -21,8 +21,8 @@ app.use(session({ secret: config.sessionSecret }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-if (config.dev) {
-  console.log(`Environment set to > ${config.dev}`);
+if (config.dev) { //true = development
+  console.log(`Using apiURL > ${config.apiUrl}`);
   const webpackConfig = require('../../webpack.config');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -53,11 +53,14 @@ require('./utils/auth/strategies/google');
 require('./utils/auth/strategies/facebook');
 
 app.post('/auth/sign-in', async (req, res, next) => {
+  console.log('req', req.cookies);
+
   passport.authenticate('basic', (error, data) => {
     try {
       if (error || !data) {
         next(boom.unauthorized());
       }
+      console.log('DATA>>', data);
 
       req.login(data, { session: false }, async error => {
         if (error) {
@@ -98,6 +101,7 @@ app.post('/auth/sign-up', async (req, res, next) => {
 app.get('/movies', async (req, res, next) => {
   const { authorization } = req.headers;
   const token = authorization;
+
   if (!token) {
     return next(boom.unauthorized('token is needed'));
   }
@@ -120,7 +124,9 @@ app.get('/movies', async (req, res, next) => {
 });
 
 app.get('/user-movies', async (req, res, next) => {
-  const { token } = req.cookies;
+  // const { token } = req.cookies;
+  const { authorization } = req.headers;
+  const token = authorization;
 
   if (!token) {
     return next(boom.unauthorized('token is needed'));
