@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "ENV=production PORT=3002 webpack-cli --config webpack.config.js",
-    "dev": "nodemon src/server/index",
+    "dev": "DEBUG=express:*,app:* nodemon src/server/index",
     "prod": "ENV=production PORT=3002 node src/server",
     "lint": "eslint src/frontend --ext .js --ext .jsx --fix"
   },

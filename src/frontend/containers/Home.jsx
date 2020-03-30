@@ -14,14 +14,16 @@ const Home = ({ myList, trends, originals }) => {
   const userMovies = [];
 
   myList.map(item => {
-    Axios.get(`https://movie-api-moonbe77.now.sh/api/movies/${item.movieId}`).then(
-      res => {
-        console.log(res);
-        userMovies.push(res);
-      },
-    );
+    Axios.get(`/movies/${item.movieId}`)
+      .then(data => {
+        // console.log(data);
+        userMovies.push(data.data);
+      })
+      .then(data => {
+        console.log(userMovies);
+      });
   });
-  console.log(userMovies);
+
   return (
     <>
       <Header />

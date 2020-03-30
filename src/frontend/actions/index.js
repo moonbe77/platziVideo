@@ -50,8 +50,6 @@ export const registerUser = (payload, redirectUrl) => {
 };
 
 export const loginUser = ({ email, password }, redirectUrl) => {
-  console.log(`
-  user data${email} : ${password}`);
 
   return dispatch => {
     axios({

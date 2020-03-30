@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const apiUrlEnv =
-  process.env.NODE_ENV !== 'production'
-    ? process.env.API_URL_DEV
-    : process.env.API_URL_PROD;
+  process.env.NODE_ENV !== 'production' ?
+    process.env.API_URL_DEV :
+    process.env.API_URL_PROD;
 
 const config = {
   dev: process.env.NODE_ENV !== 'production',

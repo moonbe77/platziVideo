@@ -21,7 +21,8 @@ app.use(session({ secret: config.sessionSecret }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-if (config.dev) { //true = development
+if (config.dev) {
+  //true = development
   console.log(`Using apiURL > ${config.apiUrl}`);
   const webpackConfig = require('../../webpack.config');
   const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -53,14 +54,12 @@ require('./utils/auth/strategies/google');
 require('./utils/auth/strategies/facebook');
 
 app.post('/auth/sign-in', async (req, res, next) => {
-  console.log('req', req.cookies);
-
+  // console.log('req', req.cookies);
   passport.authenticate('basic', (error, data) => {
     try {
       if (error || !data) {
-        next(boom.unauthorized());
+        next(boom.unauthorized(error));
       }
-      console.log('DATA>>', data);
 
       req.login(data, { session: false }, async error => {
         if (error) {
@@ -99,8 +98,9 @@ app.post('/auth/sign-up', async (req, res, next) => {
 });
 
 app.get('/movies', async (req, res, next) => {
-  const { authorization } = req.headers;
-  const token = authorization;
+  // const { authorization } = req.headers;
+  // const token = authorization;
+  const { token } = req.cookies;
 
   if (!token) {
     return next(boom.unauthorized('token is needed'));
@@ -123,10 +123,37 @@ app.get('/movies', async (req, res, next) => {
   }
 });
 
+app.get('/movies/:movieId', async (req, res, next) => {
+  // const { authorization } = req.headers;
+  // const token = authorization;
+  const { token } = req.cookies;
+  const { movieId } = req.params;
+
+  if (!token) {
+    return next(boom.unauthorized('token is needed'));
+  }
+
+  try {
+    const { data, status } = await axios({
+      url: `${config.apiUrl}/api/movies/${movieId}`,
+      headers: { Authorization: `Bearer ${token}` },
+      method: 'get',
+    });
+
+    if (status !== 200) {
+      return next(boom.badImplementation());
+    }
+
+    res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/user-movies', async (req, res, next) => {
-  // const { token } = req.cookies;
-  const { authorization } = req.headers;
-  const token = authorization;
+  const { token } = req.cookies;
+  // const { authorization } = req.headers;
+  // const token = authorization;
 
   if (!token) {
     return next(boom.unauthorized('token is needed'));
