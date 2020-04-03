@@ -1,14 +1,22 @@
 {
-  "name": "PlatziVideo",
-  "version": "1.0.0",
+  "name": "platzi_video",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "build": "ENV=production PORT=3002 webpack-cli --config webpack.config.js",
     "dev": "DEBUG=express:*,app:* nodemon src/server/index",
     "prod": "ENV=production PORT=3002 node src/server",
     "lint": "eslint src/frontend --ext .js --ext .jsx --fix"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif)$": "<rootDir>/src/frontend/__mocks__/fileMock.js",
+      "\\.(scss||sass)$": "<rootDir>/src/frontend/__mocks__/styleMock.js"
+    }
   },
   "keywords": [],
   "author": "",
@@ -53,8 +61,11 @@
     "@babel/preset-react": "^7.8.3",
     "@babel/register": "^7.8.6",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^25.2.4",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.4.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^17.1.1",
     "eslint-loader": "^3.0.3",
@@ -62,10 +73,12 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
     "file-loader": "^4.3.0",
+    "jest": "^25.2.4",
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.13.1",
     "nodemon": "^2.0.2",
     "react-hot-loader": "^4.12.19",
+    "react-test-renderer": "^16.13.1",
     "sass-loader": "^7.3.1",
     "terser-webpack-plugin": "^2.3.5",
     "webpack-cli": "^3.3.11",
