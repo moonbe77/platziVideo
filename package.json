@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage" : "jest --coverage",
+    "test:coverage": "jest --coverage",
     "build": "ENV=production PORT=3002 webpack-cli --config webpack.config.js",
     "dev": "DEBUG=express:*,app:* nodemon src/server/index",
     "prod": "ENV=production PORT=3002 node src/server",
