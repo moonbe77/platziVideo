@@ -18,7 +18,7 @@ module.exports = {
   mode: process.env.ENV,
   entry,
   output: {
-    path: path.resolve(__dirname, 'src/server/public'),
+    path: path.resolve(__dirname, 'dist'),
     filename: isDev ? 'assets/app.js' : 'assets/app-[hash].js',
     publicPath: '/',
   },
@@ -43,7 +43,7 @@ module.exports = {
             const name = module.nameForCondition && module.nameForCondition();
             return chunks.some(
               chunk =>
-                chunk.name !== 'vendors' && /[\\/]node_modules[\\/]/.test(name),
+              chunk.name !== 'vendors' && /[\\/]node_modules[\\/]/.test(name),
             );
           },
         },
@@ -95,12 +95,12 @@ module.exports = {
   },
   plugins: [
     isDev ? new webpack.HotModuleReplacementPlugin() : () => {},
-    !isDev
-      ? new CompressionWebpackPlugin({
-          test: /\.js$|\.css$/,
-          filename: '[path].gz',
-        })
-      : () => {},
+    !isDev ?
+      new CompressionWebpackPlugin({
+        test: /\.js$|\.css$/,
+        filename: '[path].gz',
+      }) :
+      () => {},
     new MiniCssExtractPlugin({
       filename: isDev ? 'assets/app.css' : 'assets/app-[hash].css',
     }),
