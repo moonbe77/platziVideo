@@ -6,7 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 require('dotenv').config();
 
-const isDev = process.env.ENV === 'development';
+const isDev = process.env.NODE_ENV === 'development';
 const entry = ['./src/frontend/index.js'];
 if (isDev) {
   entry.push(
@@ -15,10 +15,10 @@ if (isDev) {
 }
 
 module.exports = {
-  mode: process.env.ENV,
+  mode: process.env.NODE_ENV,
   entry,
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'src/server/public'),
     filename: isDev ? 'assets/app.js' : 'assets/app-[hash].js',
     publicPath: '/',
   },

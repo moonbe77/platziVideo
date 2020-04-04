@@ -2,9 +2,9 @@ import fs from 'fs';
 
 const getManifest = () => {
   try {
-    return JSON.parse(fs.readFileSync(`${__dirname}/public/manifest.json`));
+    return JSON.parse(fs.readFileSync(`${process.cwd()}/src/server/public/manifest.json`));
   } catch (error) {
-    console.log('error');
+    console.log(`Manifest not found ${error}`);
   }
 };
 

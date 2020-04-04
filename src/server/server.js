@@ -6,13 +6,10 @@ import passport from 'passport';
 import session from 'express-session';
 import boom from '@hapi/boom';
 import axios from 'axios';
+import helmet from 'helmet';
 import main from './main';
-
 import { config } from './config';
-
-// const helmet = require('helmet');
-
-// import cors = require('cors');
+import getManifest from './utils/getManifest';
 
 const app = express();
 app.use(express.json());
@@ -33,6 +30,7 @@ if (config.dev) {
   app.use(webpackDevMiddleware(compiler, serverConfig));
   app.use(webpackHotMiddleware(compiler));
 } else {
+  console.log(`Using apiURL > ${config.apiUrl}`);
   app.use((req, res, next) => {
     if (!req.hashManifest) req.hashManifest = getManifest();
     next();
@@ -61,7 +59,7 @@ app.post('/auth/sign-in', async (req, res, next) => {
         next(boom.unauthorized(error));
       }
 
-      req.login(data, { session: false }, async error => {
+      req.login(data, { session: false }, async (error) => {
         if (error) {
           next(error);
         }
@@ -320,7 +318,7 @@ app.get(
 
 app.get('*', main);
 
-app.listen(config.port, err => {
+app.listen(config.port, (err) => {
   if (err) console.log(err);
   else console.log(`Server running on port: http://localhost:${config.port}`);
 });
