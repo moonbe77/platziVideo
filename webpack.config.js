@@ -6,7 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 require('dotenv').config();
 
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = process.env.NODE_ENV !== 'production';
 const entry = ['./src/frontend/index.js'];
 if (isDev) {
   entry.push(
