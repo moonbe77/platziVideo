@@ -9,7 +9,7 @@ import axios from 'axios';
 import helmet from 'helmet';
 import main from './main';
 import { config } from './config';
-import getManifest from './utils/getManifest';
+import getManifest from './getManifest';
 
 const app = express();
 app.use(express.json());
@@ -42,17 +42,14 @@ if (config.dev) {
 }
 // Basic strategy
 require('./utils/auth/strategies/basic');
-
 // OAuth strategy
 require('./utils/auth/strategies/oauth');
-
 // Socials strategy
 require('./utils/auth/strategies/twitter');
 require('./utils/auth/strategies/google');
 require('./utils/auth/strategies/facebook');
 
 app.post('/auth/sign-in', async (req, res, next) => {
-  // console.log('req', req.cookies);
   passport.authenticate('basic', (error, data) => {
     try {
       if (error || !data) {

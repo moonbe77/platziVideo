@@ -1,4 +1,4 @@
-import getManifest from '../utils/getManifest';
+import getManifest from '../getManifest';
 
 let files = false;
 if (process.env.NODE_ENV !== 'development') files = getManifest();

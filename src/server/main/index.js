@@ -54,7 +54,7 @@ const main = async (req, res, next) => {
         // console.log(userMovies);
       } catch (error) {
         userMovies = [];
-        console.log(error.response.status);
+        console.log(error);
       }
     }
     console.log('User>>', user);
