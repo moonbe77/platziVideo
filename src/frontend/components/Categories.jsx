@@ -4,7 +4,6 @@ import '../assets/styles/components/Categories.scss';
 const Categories = ({ children, title }) => (
   <div className='categories'>
     <h3 className='categories__title'>
-      QUE ES ESTO
       {title}
     </h3>
     {children}

@@ -9,7 +9,7 @@
     "test:coverage": "jest --coverage",
     "build": "NODE_ENV=production PORT=3010 webpack-cli --config webpack.config.js",
     "dev": "NOD_ENV=development DEBUG=express:*,app:* nodemon src/server/index",
-    "prod": "NODE_ENV=production PORT=3010 node src/server",
+    "prod": "NODE_ENV=production PORT=3010 node src/server/index",
     "lint": "eslint src/frontend --ext .js --ext .jsx --fix"
   },
   "jest": {
