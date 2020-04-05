@@ -14,23 +14,30 @@ import { config } from '../config';
 require('dotenv').config();
 
 const main = async (req, res, next) => {
-  let initialState;
-  let listMovies;
-  let userMovies;
+  const initialState = {
+    user: {},
+    playing: {},
+    myList: [],
+    userMovies: null,
+    trends: [],
+    originals: [],
+  };
 
+  //get list of movies
   try {
     const { token } = req.cookies;
-    listMovies = await axios({
+    const listMovies = await axios({
       url: `${config.apiUrl}/api/movies`,
       headers: { Authorization: `Bearer ${token}` },
       method: 'get',
     });
 
-    listMovies = listMovies.data.data;
+    initialState.trends = listMovies.data.data;
+    initialState.originals = listMovies.data.data;
   } catch (error) {
-    listMovies = [];
+    console.log(error);
   }
-
+  //get user from the cookies
   try {
     const { name, id, email } = req.cookies;
 
@@ -42,40 +49,64 @@ const main = async (req, res, next) => {
         name,
         email,
       };
-      try {
-        const { token } = req.cookies;
-        userMovies = await axios({
-          url: `${config.apiUrl}/api/user-movies`,
-          headers: { Authorization: `Bearer ${token}` },
-          method: 'get',
-        });
-
-        userMovies = userMovies.data.data;
-        // console.log(userMovies);
-      } catch (error) {
-        userMovies = [];
-        console.log(error);
-      }
     }
     console.log('User>>', user);
 
-    initialState = {
-      user,
-      playing: {},
-      myList: userMovies,
-      trends: listMovies,
-      originals: listMovies,
-    };
+    initialState.user = user;
   } catch (error) {
     console.log(error);
+  }
+  //get list of movies of the user
+  try {
+    if (initialState.user.id) {
+      const { token } = req.cookies;
+      const userMoviesList = await axios({
+        url: `${config.apiUrl}/api/user-movies`,
+        headers: { Authorization: `Bearer ${token}` },
+        method: 'get',
+      });
 
-    initialState = {
-      user: {},
-      playing: {},
-      myList: [],
-      trends: [],
-      originals: [],
-    };
+      initialState.myList = userMoviesList.data.data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  //get the userMovies data
+  try {
+    if (initialState.myList.length >= 1) {
+      const { token } = req.cookies;
+
+      const addToState = (list) => {
+        initialState.userMovies = list;
+        console.log(`add to state function >>> ${list}`);
+      };
+
+      const getMovie = (movieId) => {
+        return axios({
+          url: `${config.apiUrl}/api/movies/${movieId}`,
+          method: 'GET',
+          headers: { Authorization: `Bearer ${token}` },
+        });
+      };
+
+      const getMovies = async () => {
+        const promises = initialState.myList.map((item) => {
+          return getMovie(item.movieId);
+        });
+
+        const response = await Promise.all(promises);
+        const list = response.map((movie) => {
+          return movie.data.data;
+        });
+
+        addToState(list);
+      };
+      getMovies();
+    } else {
+      initialState.userMovies = false;
+    }
+  } catch (error) {
+    console.log(error);
   }
 
   const isLogged = initialState.user.id;
