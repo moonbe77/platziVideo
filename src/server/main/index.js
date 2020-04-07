@@ -14,7 +14,8 @@ import { config } from '../config';
 require('dotenv').config();
 
 const main = async (req, res, next) => {
-  const initialState = {
+  // eslint-disable-next-line prefer-const
+  let initialState = {
     user: {},
     playing: {},
     myList: [],
@@ -60,50 +61,14 @@ const main = async (req, res, next) => {
   try {
     if (initialState.user.id) {
       const { token } = req.cookies;
+
       const userMoviesList = await axios({
         url: `${config.apiUrl}/api/user-movies`,
         headers: { Authorization: `Bearer ${token}` },
-        method: 'get',
+        method: 'GET',
       });
 
       initialState.myList = userMoviesList.data.data;
-    }
-  } catch (error) {
-    console.log(error);
-  }
-  //get the userMovies data
-  try {
-    if (initialState.myList.length >= 1) {
-      const { token } = req.cookies;
-
-      const addToState = (list) => {
-        initialState.userMovies = list;
-        console.log(`add to state function >>> ${list}`);
-      };
-
-      const getMovie = (movieId) => {
-        return axios({
-          url: `${config.apiUrl}/api/movies/${movieId}`,
-          method: 'GET',
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      };
-
-      const getMovies = async () => {
-        const promises = initialState.myList.map((item) => {
-          return getMovie(item.movieId);
-        });
-
-        const response = await Promise.all(promises);
-        const list = response.map((movie) => {
-          return movie.data.data;
-        });
-
-        addToState(list);
-      };
-      getMovies();
-    } else {
-      initialState.userMovies = false;
     }
   } catch (error) {
     console.log(error);
