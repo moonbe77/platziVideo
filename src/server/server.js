@@ -93,8 +93,6 @@ app.post('/auth/sign-up', async (req, res, next) => {
 });
 
 app.get('/movies', async (req, res, next) => {
-  // const { authorization } = req.headers;
-  // const token = authorization;
   const { token } = req.cookies;
 
   if (!token) {
@@ -119,8 +117,6 @@ app.get('/movies', async (req, res, next) => {
 });
 
 app.get('/movies/:movieId', async (req, res, next) => {
-  // const { authorization } = req.headers;
-  // const token = authorization;
   const { token } = req.cookies;
   const { movieId } = req.params;
 
@@ -147,8 +143,6 @@ app.get('/movies/:movieId', async (req, res, next) => {
 
 app.get('/user-movies', async (req, res, next) => {
   const { token } = req.cookies;
-  // const { authorization } = req.headers;
-  // const token = authorization;
 
   if (!token) {
     return next(boom.unauthorized('token is needed'));
@@ -172,9 +166,14 @@ app.get('/user-movies', async (req, res, next) => {
 });
 
 app.post('/user-movies', async (req, res, next) => {
+  const { token } = req.cookies;
+  console.log(req.body);
+
+  if (!token) {
+    return next(boom.unauthorized('token is needed'));
+  }
   try {
     const { body: userMovie } = req;
-    const { token } = req.cookies;
 
     const { data, status } = await axios({
       url: `${config.apiUrl}/api/user-movies`,
@@ -184,7 +183,7 @@ app.post('/user-movies', async (req, res, next) => {
     });
 
     if (status !== 201) {
-      return next(boom.badImplementation(''));
+      return next(boom.badImplementation(status, data));
     }
 
     res.status(201).json(data);
