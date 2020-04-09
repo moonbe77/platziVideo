@@ -12,19 +12,19 @@ import '../assets/styles/App.scss';
 
 const Home = ({ myList, trends, originals, user }) => {
   const [data, loading] = getUserMovies(myList);
-  console.log(data);
+
   return (
     <>
       <Header />
       <Search isHome />
       {myList.length > 0 &&
         (loading ? (
-          <Categories title='Mi Lista'>CARGANDO</Categories>
+          <Categories title='Mi Lista'><Carousel>CARGANDO</Carousel></Categories>
         ) : (
           <Categories title='Mi Lista'>
             <Carousel>
-              {myList.map((item) => (
-                <CarouselItem key={item.id} {...item} user={user} isList />
+              {data.map((item) => (
+                <CarouselItem key={item.id} {...item.data.data} user={user} isList />
               ))}
             </Carousel>
           </Categories>

@@ -1,25 +1,32 @@
+/* eslint-disable implicit-arrow-linebreak */
 // hooks.js
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function getUserMovies(listOfUserMovies) {
-  console.log(listOfUserMovies);
+const getMovie = (_id, id) =>
+  axios.get(`/movies/${id}`, {
+    transformResponse: [
+      (data) => {
+        const movie = JSON.parse(data);
+        movie.data.userMovieId = _id;
+        return movie;
+      },
+    ],
+  });
 
+function getUserMovies(listOfUserMovies) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getMovie = (id) => {
-    return axios.get(`/movies/${id}`);
-  };
-  async function fetchUrl() {
-    const response = await listOfUserMovies.map(movie => getMovie(movie.movieId));
-
-    const json = await Promise.all(response);
-    setData(json);
+  async function fetchMovies() {
+    const response = await listOfUserMovies.map(movie => getMovie(movie._id, movie.movieId));
+    const all = await axios.all(response);
+    // const json = await Promise.all(response);
+    setData(all);
     setLoading(false);
   }
   useEffect(() => {
-    fetchUrl();
+    fetchMovies();
   }, []);
   return [data, loading];
 }
