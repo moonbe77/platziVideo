@@ -15,9 +15,7 @@ Array [
         src="test-file-stubs"
       />
     </a>
-    <div>
-      no error
-    </div>
+    <div />
     <div
       className="header__menu"
     >

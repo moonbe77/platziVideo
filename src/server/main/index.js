@@ -14,12 +14,13 @@ import { config } from '../config';
 require('dotenv').config();
 
 const main = async (req, res, next) => {
+  console.log(req.cookies);
   // eslint-disable-next-line prefer-const
   let initialState = {
-    user: {},
+    user: false,
     playing: {},
     myList: [],
-    userMovies: null,
+    userMovies: [],
     trends: [],
     originals: [],
   };
@@ -38,7 +39,7 @@ const main = async (req, res, next) => {
   } catch (error) {
     console.log(error);
   }
-  //get user from the cookies
+
   try {
     const { name, id, email } = req.cookies;
 
@@ -51,7 +52,6 @@ const main = async (req, res, next) => {
         email,
       };
     }
-    console.log('User>>', user);
 
     initialState.user = user;
   } catch (error) {

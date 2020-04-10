@@ -33,12 +33,12 @@ app.post('/auth/sign-in', async (req, res, next) => {
         next(boom.unauthorized());
       }
 
-      req.login(data, { session: false }, async error => {
+      req.login(data, { session: false }, async (error) => {
         if (error) {
           next(error);
         }
 
-        const { token, ...user } = data;
+        const { token } = data;
 
         res.cookie('token', token, {
           httpOnly: !config.dev,

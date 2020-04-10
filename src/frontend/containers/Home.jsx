@@ -10,36 +10,41 @@ import CarouselItem from '../components/CarouselItem';
 import getUserMovies from '../hooks/getUserMovies';
 import '../assets/styles/App.scss';
 
-const Home = ({ myList, trends, originals, user }) => {
-  const [data, loading] = getUserMovies(myList);
+const Home = ({ myList, trends, originals, userMovies, user }) => {
+  getUserMovies(myList);
 
   return (
     <>
       <Header />
       <Search isHome />
-      {myList.length > 0 &&
-        (loading ? (
-          <Categories title='Mi Lista'><Carousel>CARGANDO</Carousel></Categories>
-        ) : (
-          <Categories title='Mi Lista'>
-            <Carousel>
-              {data.map((item) => (
-                <CarouselItem key={item.id} {...item.data.data} user={user} isList />
-              ))}
-            </Carousel>
-          </Categories>
-        ))}
+      <Categories title='Mi Lista'>
+        {userMovies.length > 0 && (
+          <Carousel>
+            {userMovies.map(item => {
+              const movie = item;
+              return (
+                <CarouselItem
+                  key={movie.userMovieId}
+                  {...movie}
+                  user={user}
+                  isList
+                />
+              );
+            })}
+          </Carousel>
+        )}
+      </Categories>
       <Categories title='Tendencias'>
         <Carousel>
-          {trends.map((item) => (
-            <CarouselItem key={item.id} {...item} user={user} />
+          {trends.map(item => (
+            <CarouselItem key={item._id} {...item} user={user} />
           ))}
         </Carousel>
       </Categories>
       <Categories title='Originales de Platzi Video'>
         <Carousel>
-          {originals.map((item) => (
-            <CarouselItem key={item.id} {...item} user={user} />
+          {originals.map(item => (
+            <CarouselItem key={item._id} {...item} user={user} />
           ))}
         </Carousel>
       </Categories>
@@ -47,11 +52,12 @@ const Home = ({ myList, trends, originals, user }) => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     myList: state.myList,
     trends: state.trends,
     originals: state.originals,
+    userMovies: state.userMovies,
     user: state.user,
   };
 };

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { setFavorite, deleteFavorite } from '../actions';
+import { addUserMovie, removeUserMovie } from '../actions';
 import '../assets/styles/components/CarouselItem.scss';
 import playIcon from '../assets/static/play-icon.png';
 import plusIcon from '../assets/static/plus-icon.png';
@@ -40,8 +40,9 @@ const CarouselItem = props => {
     axios
       .post('/user-movies', userMovie)
       .then(res => {
-        console.log(res);
-        props.setFavorite(movieData);
+        const userMovieId = res.data.data;
+        movieData['userMovieId'] = userMovieId;
+        props.addUserMovie(movieData);
       })
       // eslint-disable-next-line arrow-parens
       .catch(error => console.log(error));
@@ -51,8 +52,7 @@ const CarouselItem = props => {
     axios
       .delete(`/user-movies/${itemId}`)
       .then(res => {
-        console.log(res);
-        props.deleteFavorite(res.data.data);
+        props.removeUserMovie(res.data.data);
       })
       // eslint-disable-next-line arrow-parens
       .catch(error => console.log(error));
@@ -104,8 +104,8 @@ CarouselItem.propTypes = {
 };
 
 const mapDispatchToProps = {
-  setFavorite,
-  deleteFavorite,
+  addUserMovie,
+  removeUserMovie,
 };
 
 export default connect(null, mapDispatchToProps)(CarouselItem);

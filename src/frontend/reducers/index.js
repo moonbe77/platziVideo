@@ -5,6 +5,21 @@ const reducer = (state, action) => {
         ...state,
         myList: [...state.myList, action.payload],
       };
+    case 'SET_USER_MOVIES':
+      return {
+        ...state,
+        userMovies: action.payload.map(data => data.data),
+      };
+    case 'ADD_USER_MOVIE':
+      return {
+        ...state,
+        userMovies: [...state.userMovies, action.payload],
+      };
+    case 'REMOVE_USER_MOVIE':
+      return {
+        ...state,
+        userMovies: state.userMovies.filter(items => items.userMovieId !== action.payload),
+      };
     case 'DELETE_FAVORITE':
       return {
         ...state,

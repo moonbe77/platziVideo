@@ -167,7 +167,6 @@ app.get('/user-movies', async (req, res, next) => {
 
 app.post('/user-movies', async (req, res, next) => {
   const { token } = req.cookies;
-  console.log(req.body);
 
   if (!token) {
     return next(boom.unauthorized('token is needed'));

@@ -30,7 +30,7 @@ const Header = (props) => {
         <img className='header__img' src={logo} alt='Platzi Video' />
       </Link>
       <div>
-        {error ? error.message : 'no error'}
+        {error && error.message }
       </div>
       <div className='header__menu'>
         <div className='header__menu--profile'>
