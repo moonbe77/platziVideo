@@ -7,11 +7,11 @@ import Search from '../components/Search';
 import Categories from '../components/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
-import getUserMovies from '../hooks/getUserMovies';
+// import getUserMovies from '../hooks/getUserMovies';
 import '../assets/styles/App.scss';
 
 const Home = ({ myList, trends, originals, userMovies, user }) => {
-  getUserMovies(myList);
+  // getUserMovies(myList);
 
   return (
     <>

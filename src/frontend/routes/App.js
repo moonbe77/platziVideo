@@ -16,7 +16,7 @@ const App = ({ isLogged }) => (
         <Route exact path='/auth/google/callback' component={Home} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Register} />
-        <Route exact path='/create_movie' component={CreateMovie} />
+        <Route exact path='/create_movie' component={isLogged ? CreateMovie : Login} />
         <Route exact path='/player/:id' component={isLogged ? Player : Login} />
         <Route component={NotFound} />
       </Switch>

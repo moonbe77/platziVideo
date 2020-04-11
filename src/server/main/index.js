@@ -10,6 +10,7 @@ import Layout from '../../frontend/components/Layout';
 import reducer from '../../frontend/reducers';
 import render from '../render';
 import { config } from '../config';
+import getUserMovies from '../utils/getUserMovies';
 
 require('dotenv').config();
 
@@ -41,7 +42,6 @@ const main = async (req, res, next) => {
 
   try {
     const { name, id, email } = req.cookies;
-
     let user = {};
 
     if (name || email || id) {
@@ -60,7 +60,6 @@ const main = async (req, res, next) => {
   try {
     if (initialState.user.id) {
       const { token } = req.cookies;
-
       const userMoviesList = await axios({
         url: `${config.apiUrl}/api/user-movies`,
         headers: { Authorization: `Bearer ${token}` },
@@ -68,6 +67,23 @@ const main = async (req, res, next) => {
       });
 
       initialState.myList = userMoviesList.data.data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  try {
+    if (initialState.myList.length >= 1) {
+      const { token } = req.cookies;
+
+      getUserMovies(token, initialState.myList)
+        // eslint-disable-next-line no-return-assign
+        .then((data) => data.map(movie => movie.data)).then(list => {
+          initialState.userMovies = list;
+          console.log(list);
+        })
+        .catch(error => console.log(error));
+
     }
   } catch (error) {
     console.log(error);
