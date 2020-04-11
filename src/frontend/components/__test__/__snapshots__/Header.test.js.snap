@@ -14,6 +14,12 @@ exports[`Header Component match Snapshot 1`] = `
       src="test-file-stubs"
     />
   </a>
+  <a
+    href="/create_movie"
+    onClick={[Function]}
+  >
+     Create Movie
+  </a>
   <div />
   <div
     className="header__menu"

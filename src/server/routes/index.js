@@ -93,6 +93,32 @@ app.get('/movies', async (req, res, next) => {
   }
 });
 
+app.post('/movies', async (req, res, next) => {
+  const { authorization } = req.headers;
+  const token = authorization;
+  const movieData = req.body;
+  if (!token) {
+    return next(boom.unauthorized('token is needed'));
+  }
+
+  try {
+    const { data, status } = await axios({
+      url: `${config.apiUrl}/api/movies`,
+      headers: { Authorization: `Bearer ${token}` },
+      method: 'post',
+      data: movieData,
+    });
+
+    if (status !== 201) {
+      return next(boom.badImplementation());
+    }
+
+    res.status(200).json(data);
+  } catch (error) {
+    next(error);
+  }
+});
+
 app.get('/user-movies', async (req, res, next) => {
   const { token } = req.cookies;
 

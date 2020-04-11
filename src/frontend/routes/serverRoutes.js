@@ -4,6 +4,7 @@ import Login from '../containers/Login';
 import Register from '../containers/Register';
 import NotFound from '../containers/NotFound';
 import Player from '../containers/Player';
+import CreateMovie from '../containers/CreateMovie';
 
 const serverRoutes = isLogged => {
   [
@@ -20,6 +21,11 @@ const serverRoutes = isLogged => {
     {
       path: '/register',
       component: Register,
+      exact: true,
+    },
+    {
+      path: '/create_movie',
+      component: CreateMovie,
       exact: true,
     },
     {

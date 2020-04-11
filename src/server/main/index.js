@@ -14,7 +14,6 @@ import { config } from '../config';
 require('dotenv').config();
 
 const main = async (req, res, next) => {
-  console.log(req.cookies);
   // eslint-disable-next-line prefer-const
   let initialState = {
     user: false,

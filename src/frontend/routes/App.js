@@ -6,6 +6,7 @@ import Register from '../containers/Register';
 import NotFound from '../containers/NotFound';
 import Player from '../containers/Player';
 import Layout from '../components/Layout';
+import CreateMovie from '../containers/CreateMovie';
 
 const App = ({ isLogged }) => (
   <BrowserRouter>
@@ -15,6 +16,7 @@ const App = ({ isLogged }) => (
         <Route exact path='/auth/google/callback' component={Home} />
         <Route exact path='/login' component={Login} />
         <Route exact path='/register' component={Register} />
+        <Route exact path='/create_movie' component={CreateMovie} />
         <Route exact path='/player/:id' component={isLogged ? Player : Login} />
         <Route component={NotFound} />
       </Switch>

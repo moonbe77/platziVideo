@@ -29,6 +29,7 @@ const Header = (props) => {
       <Link to='/'>
         <img className='header__img' src={logo} alt='Platzi Video' />
       </Link>
+      <Link to='/create_movie'> Create Movie</Link>
       <div>
         {error && error.message }
       </div>
