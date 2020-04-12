@@ -72,22 +72,24 @@ const main = async (req, res, next) => {
     console.log(error);
   }
 
-  try {
-    if (initialState.myList.length >= 1) {
-      const { token } = req.cookies;
+  // try {
+  //   if (initialState.myList.length >= 1) {
+  //     const { token } = req.cookies;
+  //     let moviesList = [];
 
-      getUserMovies(token, initialState.myList)
-        // eslint-disable-next-line no-return-assign
-        .then((data) => data.map(movie => movie.data)).then(list => {
-          initialState.userMovies = list;
-          console.log(list);
-        })
-        .catch(error => console.log(error));
-
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  //     getUserMovies(token, initialState.myList)
+  //       .then(data => data.map(movie => movie.data))
+  //       .then(list => {
+  //         moviesList = list;
+  //         return moviesList;
+  //       })
+  //       .catch(error => console.log(error));
+  //     initialState.userMovies = moviesList;
+  //     console.log(moviesList);
+  //   }
+  // } catch (error) {
+  //   console.log(error);
+  // }
 
   const isLogged = initialState.user.id;
   const store = createStore(reducer, initialState);
