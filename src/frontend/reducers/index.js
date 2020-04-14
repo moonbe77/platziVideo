@@ -8,7 +8,7 @@ const reducer = (state, action) => {
     case 'SET_USER_MOVIES':
       return {
         ...state,
-        userMovies: action.payload.map(data => data.data),
+        userMovies: action.payload,
       };
     case 'ADD_USER_MOVIE':
       return {
