@@ -1,20 +1,26 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable arrow-parens */
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Search from '../components/Search';
 import Categories from '../components/Categories';
 import Carousel from '../components/Carousel';
 import CarouselItem from '../components/CarouselItem';
-import getUserMovies from '../hooks/getUserMovies';
+import { getUserMovies } from '../actions/index';
+// import getUserMovies from '../hooks/getUserMovies';
 import '../assets/styles/App.scss';
 
-const Home = ({ myList, trends, originals, userMovies, user }) => {
-  if (userMovies.length === 0) {
-    console.log('User movies fetched from home component');
-    getUserMovies(myList);
-  }
+const Home = props => {
+  const { myList, trends, originals, userMovies, user } = props;
+  useEffect(() => {
+    props.getUserMovies(myList);
+  }, []);
+
+  // if (userMovies.length === 0) {
+  //   console.log('User Movies fetched from client');
+  //   getUserMovies(myList);
+  // }
 
   return (
     <>
@@ -64,5 +70,7 @@ const mapStateToProps = state => {
     user: state.user,
   };
 };
-
-export default connect(mapStateToProps, null)(Home);
+const mapDispatchToProps = {
+  getUserMovies,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -1,9 +1,9 @@
 require('dotenv').config();
 
 const apiUrlEnv =
-  process.env.NODE_ENV !== 'production' ?
-    process.env.API_URL_DEV :
-    process.env.API_URL_PROD;
+  process.env.NODE_ENV !== 'production'
+    ? process.env.API_URL_DEV
+    : process.env.API_URL_PROD;
 
 const config = {
   dev: process.env.NODE_ENV !== 'production',
@@ -11,6 +11,7 @@ const config = {
   apiUrl: apiUrlEnv,
   appUrl: process.env.APP_URL,
   apiKeyToken: process.env.API_KEY_TOKEN,
+  authSecret: process.env.AUTH_JWT_SECRET,
   googleClientId: process.env.GOOGLE_CLIENT_ID,
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
   sessionSecret: process.env.SESSION_SECRET,

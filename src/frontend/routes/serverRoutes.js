@@ -30,7 +30,7 @@ const serverRoutes = isLogged => {
     },
     {
       path: '/player/:id',
-      component: isLogged ? Home : Player,
+      component: isLogged ? Player : Login,
       exact: true,
     },
     {

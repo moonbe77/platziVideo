@@ -18,9 +18,9 @@ app.use(session({ secret: config.sessionSecret }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+console.log(`Using apiURL > ${config.apiUrl}`);
 if (config.dev) {
   //true = development
-  console.log(`Using apiURL > ${config.apiUrl}`);
   const webpackConfig = require('../../webpack.config');
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -30,7 +30,6 @@ if (config.dev) {
   app.use(webpackDevMiddleware(compiler, serverConfig));
   app.use(webpackHotMiddleware(compiler));
 } else {
-  console.log(`Using apiURL > ${config.apiUrl}`);
   app.use((req, res, next) => {
     if (!req.hashManifest) req.hashManifest = getManifest();
     next();

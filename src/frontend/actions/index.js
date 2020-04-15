@@ -1,11 +1,6 @@
 /* eslint-disable arrow-parens */
 import axios from 'axios';
 
-export const setFavorite = payload => ({
-  type: 'SET_FAVORITE',
-  payload,
-});
-
 export const setUserMovies = payload => ({
   type: 'SET_USER_MOVIES',
   payload,
@@ -50,6 +45,29 @@ export const getVideoSource = payload => ({
   type: 'GET_VIDEO_SOURCE',
   payload,
 });
+
+export const getUserMovies = payload => {
+  return dispatch => {
+    const getMovie = (_id, id) => axios.get(`/movies/${id}`, {
+      transformResponse: [
+        data => {
+          const movie = JSON.parse(data);
+          movie.data.userMovieId = _id;
+          return movie.data;
+        },
+      ],
+    });
+
+    const response = payload.map(movie => getMovie(movie._id, movie.movieId));
+    axios
+      .all(response)
+      .then(data => data.map(item => item.data))
+      .then(data => {
+        dispatch(setUserMovies(data));
+      }) //make this a plain object
+      .catch(err => dispatch(setError(err)));
+  };
+};
 
 export const registerUser = (payload, redirectUrl) => {
   return dispatch => {

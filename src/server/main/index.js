@@ -5,6 +5,7 @@ import { createStore } from 'redux';
 import { StaticRouter } from 'react-router';
 import { renderRoutes } from 'react-router-config';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import serverRoutes from '../../frontend/routes/serverRoutes';
 import Layout from '../../frontend/components/Layout';
 import reducer from '../../frontend/reducers';
@@ -24,7 +25,29 @@ const main = async (req, res, next) => {
     trends: [],
     originals: [],
   };
+  ///verify user is logged in and didn't expired
+  try {
+    const { name, id, email, token } = req.cookies;
 
+    // verify a token symmetric
+    jwt.verify(token, config.authSecret, (err, decoded) => {
+      if (err) {
+        console.log(err);
+        initialState.user = {};
+      } else {
+        if (name || email || id) {
+          const user = {
+            id,
+            name,
+            email,
+          };
+          initialState.user = user;
+        }
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
   //get list of movies
   try {
     const { token } = req.cookies;
@@ -40,22 +63,6 @@ const main = async (req, res, next) => {
     console.log(error);
   }
 
-  try {
-    const { name, id, email } = req.cookies;
-    let user = {};
-
-    if (name || email || id) {
-      user = {
-        id,
-        name,
-        email,
-      };
-    }
-
-    initialState.user = user;
-  } catch (error) {
-    console.log(error);
-  }
   //get list of movies of the user
   try {
     if (initialState.user.id) {
