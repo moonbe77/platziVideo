@@ -14,7 +14,7 @@ const render = (html, preloadedState) => {
       <head>
         <title>Platzi Video</title>
         <link rel="stylesheet" href="${
-  files ? files['main.css'] : 'assets/app.css'
+  files ? files['main.css'] : '/assets/app.css'
 }" type="text/css"></link>
       </head>
       <body>
@@ -28,10 +28,10 @@ const render = (html, preloadedState) => {
   )}
         </script>
         <script src="${
-  files ? files['main.js'] : 'assets/app.js'
+  files ? files['main.js'] : '/assets/app.js'
 }" type="text/javascript"></script>
         <script src="${
-  files ? files['vendors.js'] : 'assets/vendor.js'
+  files ? files['vendors.js'] : '/assets/vendor.js'
 }" type="text/javascript"></script>
       </body>
     </html>

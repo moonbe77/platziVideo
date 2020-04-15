@@ -20,6 +20,12 @@ exports[`Header Component match Snapshot 1`] = `
   >
      Create Movie
   </a>
+  <a
+    href="/player/123456789"
+    onClick={[Function]}
+  >
+     Player 
+  </a>
   <div />
   <div
     className="header__menu"

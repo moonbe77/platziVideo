@@ -34,10 +34,6 @@ const serverRoutes = isLogged => {
       exact: true,
     },
     {
-      name: 'NotFound',
-      component: NotFound,
-    },
-    {
       path: '/auth/google/callback',
       name: 'googleCallBack',
       component: Home,
@@ -45,6 +41,10 @@ const serverRoutes = isLogged => {
     {
       path: '/user-movies',
       name: 'user-movies',
+      component: NotFound,
+    },
+    {
+      name: 'NotFound',
       component: NotFound,
     },
   ];

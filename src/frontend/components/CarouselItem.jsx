@@ -23,6 +23,7 @@ const CarouselItem = props => {
   } = props;
 
   const handleSetFavorite = () => {
+    //MOVE ALL THIS TO REDUX ACTIONS
     const { id: userId } = user;
     const movieData = {
       _id,
