@@ -6,6 +6,7 @@ exports[`Carousel Component match Snapshot 1`] = `
 >
   <div
     className="carousel__container"
+    onMouseMove={[Function]}
   />
 </section>
 `;

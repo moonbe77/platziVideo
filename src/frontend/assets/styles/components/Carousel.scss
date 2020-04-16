@@ -3,9 +3,12 @@
   padding-left: 30px;
   width: 100%;
   position: relative;
+
 }
 
 .carousel__container {
+  background-color: red;
+  padding: 0 20px;
   transition: 450ms -webkit-transform;
   transition: 450ms transform;
   transition: 450ms transform, 450ms -webkit-transform;
@@ -13,6 +16,8 @@
   white-space: nowrap;
   margin: 70px 0px;
   padding-bottom: 10px;
+  position: relative;
+  left: 0px;
 }
 
 .carousel__container:hover .carousel-item {
@@ -20,7 +25,7 @@
 }
 
 .carousel__container:hover .carousel-item:hover {
-  -webkit-transform: scale(1.5);
-          transform: scale(1.5);
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
   opacity: 1;
 }
