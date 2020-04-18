@@ -3,10 +3,16 @@
 exports[`Carousel Component match Snapshot 1`] = `
 <section
   className="carousel"
+  onMouseMove={[Function]}
+  onMouseOut={[Function]}
 >
   <div
     className="carousel__container"
-    onMouseMove={[Function]}
+    style={
+      Object {
+        "left": 0,
+      }
+    }
   />
 </section>
 `;

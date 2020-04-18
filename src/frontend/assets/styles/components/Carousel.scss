@@ -1,23 +1,25 @@
 .carousel {
-  overflow: scroll;
-  padding-left: 30px;
-  width: 100%;
+  padding: 0 5px;
+  margin: 20px 0;
+  width: 100vw;
   position: relative;
-
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex-shrink: unset;
+  justify-content: space-between;
 }
 
 .carousel__container {
-  background-color: red;
-  padding: 0 20px;
+  // border: 2px solid red;
   transition: 450ms -webkit-transform;
   transition: 450ms transform;
   transition: 450ms transform, 450ms -webkit-transform;
   font-size: 0;
   white-space: nowrap;
-  margin: 70px 0px;
   padding-bottom: 10px;
-  position: relative;
-  left: 0px;
+  width: 90vw;
+  overflow: hidden;
 }
 
 .carousel__container:hover .carousel-item {
@@ -26,6 +28,20 @@
 
 .carousel__container:hover .carousel-item:hover {
   -webkit-transform: scale(1.1);
-          transform: scale(1.1);
+  transform: scale(1.1);
   opacity: 1;
+}
+
+.carousel__content {
+  // border: 2px solid blue;
+  margin: 35px 0px;
+  position: relative;
+  transition: transform 1s cubic-bezier(0.17, 0.07, 0, 1.07) 0s;
+}
+
+.carousel__slide__button {
+  background-color: rgba(44, 44, 44, 0.26);
+  width: 5vw;
+  z-index: 999;
+  position: relative;
 }
