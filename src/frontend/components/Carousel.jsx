@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-closing-bracket-location */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
+import { useSpring, animated } from 'react-spring';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import '../assets/styles/components/Carousel.scss';
 
 const Carousel = ({ children }) => {
@@ -44,33 +46,39 @@ const Carousel = ({ children }) => {
     }
   };
 
+  const fade = useSpring({ opacity: 1, from: { opacity: 0 } });
+
   return (
     // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
-    <section
+    <animated.section
       className='carousel'
+      style={fade}
       // onMouseMove={e => setMousePosition({ x: e.clientX, y: e.clientY })}
       // onMouseOut={() => setMousePosition({ x: 0, y: 0 })}
     >
-      <div
+      <animated.div
         className='carousel__slide__button action-left'
+        style={fade}
         role='button'
         tabIndex='0'
         onClick={() => handleSlideCarousel('left')}>
-        left
-      </div>
+        <FaChevronLeft />
+      </animated.div>
       <div className='carousel__container'>
-        <div className='carousel__content' style={{ transform: `translate(${carrouselPosition}px, 0px)` }}>
+        <div
+          className='carousel__content'
+          style={{ transform: `translate(${carrouselPosition}px, 0px)` }}>
           {children}
         </div>
       </div>
-      <div
+      <animated.div
         className='carousel__slide__button action-right'
         role='button'
         tabIndex='0'
         onClick={() => handleSlideCarousel('right')}>
-        right
-      </div>
-    </section>
+        <FaChevronRight />
+      </animated.div>
+    </animated.section>
   );
 };
 

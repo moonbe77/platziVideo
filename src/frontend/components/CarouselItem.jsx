@@ -1,16 +1,22 @@
 /* eslint-disable arrow-parens */
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { useSpring, animated } from 'react-spring';
 import { addUserMovie, removeUserMovie } from '../actions';
 import '../assets/styles/components/CarouselItem.scss';
 import playIcon from '../assets/static/play-icon.png';
 import plusIcon from '../assets/static/plus-icon.png';
 import removeIcon from '../assets/static/remove-icon.png';
+import Spinner from './Spinner';
 
 const CarouselItem = props => {
+  // eslint-disable-next-line no-unused-vars
+  const [isImgLoaded, setIsImgLoaded] = useState(false);
+  const fade = useSpring({ opacity: 1, from: { opacity: 0 } });
+
   const {
     _id,
     cover,
@@ -61,7 +67,14 @@ const CarouselItem = props => {
 
   return (
     <div className='carousel-item'>
-      <img className='carousel-item__img' src={cover} alt={title} />
+      {!isImgLoaded && <Spinner /> }
+      <animated.img
+        className='carousel-item__img'
+        style={fade}
+        src={cover}
+        alt={title}
+        onLoad={() => { setIsImgLoaded(true); }}
+      />
       <div className='carousel-item__details'>
         <div>
           <Link to={`/player/${_id}`}>
