@@ -1,20 +1,20 @@
-import { setFavorite, loginRequest, logoutRequest } from '../index';
+import { setUserMovies, loginRequest, logoutRequest } from '../index';
 import movieMock from '../../__mocks__/movieMock';
 
 describe('Redux Actions', () => {
-  it('setFavorite', () => {
+  it('setUserMovies', () => {
     const payload = movieMock;
     const expected = {
-      type: 'SET_FAVORITE',
+      type: 'SET_USER_MOVIES',
       payload,
     };
-    expect(setFavorite(payload)).toEqual(expected);
+    expect(setUserMovies(payload)).toEqual(expected);
   });
 
   it('LOGIN_REQUEST ', () => {
     const payload = {
       email: 'pepe@ramon.com',
-      password: 'unpaswordde pueba',
+      password: 'un password ',
     };
     const expected = {
       type: 'LOGIN_REQUEST',

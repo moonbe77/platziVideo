@@ -11,11 +11,46 @@ import playIcon from '../assets/static/play-icon.png';
 import plusIcon from '../assets/static/plus-icon.png';
 import removeIcon from '../assets/static/remove-icon.png';
 import Spinner from './Spinner';
+import errorImg from '../assets/static/logo-platzi-video-colors.png';
 
-const CarouselItem = props => {
+// eslint-disable-next-line no-unused-vars
+const calc = (x, y) => {
+  const xCalc = x / 10;
+  const yCalc = -y / 10;
+
+  console.log(`xCalc ${xCalc}/ yCalc ${yCalc}`);
+  return [yCalc, xCalc, 1.1];
+};
+
+const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`;
+
+const CarouselItem = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isImgLoaded, setIsImgLoaded] = useState(false);
+  const [isImgError, setIsImgError] = useState(false);
   const fade = useSpring({ opacity: 1, from: { opacity: 0 } });
+  const [carouselItemStyle, set] = useSpring(() => ({
+    xys: [0, 0, 1],
+    config: { mass: 5, tension: 350, friction: 40 },
+  }));
+
+  const handleMouseMove = (e) => {
+    //TODO: refactor this code to make more compact and reliable
+    const viewportOffset = e.target.getBoundingClientRect(); //position of element from top left of the window
+
+    //pos = {} === position of the mouse in relation to the element top left corner minus half of the
+    // width to position the reference in the center of the element.
+    const pos = {
+      x: e.pageX - viewportOffset.left - viewportOffset.width / 2,
+      y:
+        e.pageY -
+        viewportOffset.top -
+        viewportOffset.height / 2 -
+        window.scrollY,
+    };
+
+    set({ xys: calc(pos.x, pos.y) });
+  };
 
   const {
     _id,
@@ -46,34 +81,44 @@ const CarouselItem = props => {
 
     axios
       .post('/user-movies', userMovie)
-      .then(res => {
+      .then((res) => {
         const userMovieId = res.data.data;
         movieData['userMovieId'] = userMovieId;
         props.addUserMovie(movieData);
       })
       // eslint-disable-next-line arrow-parens
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
-  const handleDeleteFavorite = itemId => {
+  const handleDeleteFavorite = (itemId) => {
     axios
       .delete(`/user-movies/${itemId}`)
-      .then(res => {
+      .then((res) => {
         props.removeUserMovie(res.data.data);
       })
       // eslint-disable-next-line arrow-parens
-      .catch(error => console.log(error));
+      .catch((error) => console.log(error));
   };
 
   return (
-    <div className='carousel-item'>
-      {!isImgLoaded && <Spinner /> }
+    <animated.div
+      className='carousel-item'
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => set({ xys: [0, 0, 1] })}
+      style={{ transform: carouselItemStyle.xys.interpolate(trans) }}
+    >
+      {!isImgLoaded && <Spinner />}
       <animated.img
         className='carousel-item__img'
         style={fade}
-        src={cover}
+        src={!isImgError ? cover : errorImg}
         alt={title}
-        onLoad={() => { setIsImgLoaded(true); }}
+        onLoad={() => {
+          setIsImgLoaded(true);
+        }}
+        onError={() => {
+          setIsImgError(true);
+        }}
       />
       <div className='carousel-item__details'>
         <div>
@@ -105,7 +150,7 @@ const CarouselItem = props => {
           {`${year} ${contentRating} ${duration}`}
         </p>
       </div>
-    </div>
+    </animated.div>
   );
 };
 

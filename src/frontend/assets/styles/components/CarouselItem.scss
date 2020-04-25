@@ -8,9 +8,9 @@
   margin-right: 10px;
   font-size: 20px;
   cursor: pointer;
-  transition: 450ms all;
-  -webkit-transform-origin: center left;
-          transform-origin: center left;
+  // transition: 450ms all;
+  // -webkit-transform-origin: center left;
+  //         transform-origin: center left;
 }
 
 .carousel-item:hover ~ .carousel-item {
@@ -35,7 +35,7 @@
   justify-content: flex-end;
   left: 0;
   opacity: 0;
-  transition: 450ms opacity;
+  // transition: 450ms opacity;
   padding: 10px;
   position: absolute;
   right: 0;
