@@ -8,3 +8,4 @@ Integration of Platzi video proyect from Escuela JS of Patzi. backend node &amp;
  * pagina de detalles de pelicula con opcion para editar o borrar si tenes la authorization
  * compartir en redes sociales
  * login con redes sociales [callBack page is not working]
+ * menor cambio para ver que pasa en el branch carousel cunado corres git status
