@@ -10,31 +10,29 @@ const Carousel = ({ children }) => {
   const [carrouselPosition, setCarrouselPosition] = useState(0);
 
   useEffect(() => {
-    const carouselNode = document.querySelector('.carousel');
-    const carouselContainerNode = document.querySelector(
-      '.carousel__container',
-    );
-    const carrouselBoxWidth = carouselNode.offsetWidth;
-    const carrouselContainerTotalWidth = carouselContainerNode.scrollWidth;
-    let interval;
+    //   const carouselNode = document.querySelector('.carousel');
+    //   const carouselContainerNode = document.querySelector(
+    //     '.carousel__container',
+    //   );
+    //   const carrouselBoxWidth = carouselNode.offsetWidth;
+    //   const carrouselContainerTotalWidth = carouselContainerNode.scrollWidth;
+    //   let interval;
 
-    if (mousePosition.x <= 100 && mousePosition.x >= 20) {
-      console.log('seting interval');
-      if (carrouselPosition !== 0) {
-        interval = setInterval(() => {
-          setCarrouselPosition(carrouselPosition => carrouselPosition + 1);
-        }, 2000);
-      }
-    } else {
-      console.log('cleaning interval');
-      clearInterval(interval);
-    }
+    //   if (mousePosition.x <= 100 && mousePosition.x >= 20) {
+    //     if (carrouselPosition !== 0) {
+    //       interval = setInterval(() => {
+    //         setCarrouselPosition(carrouselPosition => carrouselPosition + 1);
+    //       }, 2000);
+    //     }
+    //   } else {
+    //     clearInterval(interval);
+    //   }
 
-    if (mousePosition.x >= carrouselBoxWidth - 100) {
-      setCarrouselPosition(carrouselPosition - 1);
-      // setInterval(() => {
-      // }, 2000);
-    }
+    //   if (mousePosition.x >= carrouselBoxWidth - 100) {
+    //     setCarrouselPosition(carrouselPosition - 1);
+    //     // setInterval(() => {
+    //     // }, 2000);
+    //   }
   });
 
   // eslint-disable-next-line arrow-parens

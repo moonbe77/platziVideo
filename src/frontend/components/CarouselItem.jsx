@@ -11,14 +11,23 @@ import playIcon from '../assets/static/play-icon.png';
 import plusIcon from '../assets/static/plus-icon.png';
 import removeIcon from '../assets/static/remove-icon.png';
 import Spinner from './Spinner';
-import errorImg from '../assets/static/logo-platzi-video-colors.png';
+import film1 from '../assets/static/film1.jpg';
+import film2 from '../assets/static/film2.jpg';
+import film3 from '../assets/static/film3.jpg';
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+const randomImage = () => {
+  const backgrounds = [film1, film2, film3];
+  return backgrounds[getRandomInt(3)];
+};
 // eslint-disable-next-line no-unused-vars
 const calc = (x, y) => {
   const xCalc = x / 10;
   const yCalc = -y / 10;
 
-  console.log(`xCalc ${xCalc}/ yCalc ${yCalc}`);
   return [yCalc, xCalc, 1.1];
 };
 
@@ -28,8 +37,9 @@ const CarouselItem = (props) => {
   // eslint-disable-next-line no-unused-vars
   const [isImgLoaded, setIsImgLoaded] = useState(false);
   const [isImgError, setIsImgError] = useState(false);
+  //useSpring effects
   const fade = useSpring({ opacity: 1, from: { opacity: 0 } });
-  const [carouselItemStyle, set] = useSpring(() => ({
+  const [carouselItemStyle, setCarouselItemStyle] = useSpring(() => ({
     xys: [0, 0, 1],
     config: { mass: 5, tension: 350, friction: 40 },
   }));
@@ -49,7 +59,7 @@ const CarouselItem = (props) => {
         window.scrollY,
     };
 
-    set({ xys: calc(pos.x, pos.y) });
+    setCarouselItemStyle({ xys: calc(pos.x, pos.y) });
   };
 
   const {
@@ -104,14 +114,14 @@ const CarouselItem = (props) => {
     <animated.div
       className='carousel-item'
       onMouseMove={handleMouseMove}
-      onMouseLeave={() => set({ xys: [0, 0, 1] })}
+      onMouseLeave={() => setCarouselItemStyle({ xys: [0, 0, 1] })}
       style={{ transform: carouselItemStyle.xys.interpolate(trans) }}
     >
       {!isImgLoaded && <Spinner />}
       <animated.img
         className='carousel-item__img'
         style={fade}
-        src={!isImgError ? cover : errorImg}
+        src={!isImgError ? cover : randomImage()}
         alt={title}
         onLoad={() => {
           setIsImgLoaded(true);

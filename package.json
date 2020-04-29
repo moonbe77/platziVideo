@@ -49,11 +49,13 @@
     "react-dom": "^16.13.0",
     "react-hook-form": "^5.3.1",
     "react-icons": "^3.9.0",
+    "react-ideal-image": "0.0.5",
     "react-redux": "^7.2.0",
     "react-router": "^5.1.2",
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.2",
     "react-spring": "^8.0.27",
+    "react-waypoint": "^9.0.2",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "webpack": "^4.42.0"
